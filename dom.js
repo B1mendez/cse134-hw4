@@ -24,25 +24,25 @@ function init() {
 
 function walk() {
    let el;
+   let textArea = document.getElementById('walkOutput'); 
 
    el = document.getElementById('p1');
-   showNode(el);
+   textArea.value += showNode(el);
 
    el = el.firstChild;
-   showNode(el);
+   textArea.value += showNode(el);
 
    el = el.nextSibling;
-   showNode(el);
+   textArea.value += showNode(el);
 
    el = el.lastChild;
-   showNode(el);
+   textArea.value += showNode(el);
 
    el = el.parentNode.parentNode.parentNode;
-   showNode(el);
+   textArea.value += showNode(el);
 
    el = el.querySelector('section > *');
-   showNode(el);
-
+   textArea.value += showNode(el);
 
 }
 
@@ -51,7 +51,18 @@ function showNode(el) {
     let nodeName = el.nodeName;
     let nodeValue = el.nodeValue;
 
-    alert(`Node type: ${nodeType}\nNode name: ${nodeName}\nNode value: ${nodeValue}`);
+    return `Node type: ${nodeType}\nNode name: ${nodeName}\nNode value: ${nodeValue}\n\n`;
+}
+
+function traverseWalk() {
+    
+}
+
+function advancedWalk() {
+    let rootElement = document.documentElement; 
+    let textArea = document.getElementById('walkAdvancedOutput'); 
+
+    
 }
 
 function modify() {
