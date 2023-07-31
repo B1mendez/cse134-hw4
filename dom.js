@@ -6,9 +6,19 @@ function init() {
         walk();
     });
 
+    element = document.getElementById('walkAdvancedBtn')
+    element.addEventListener('click', function () {
+        advancedWalk();
+    });
+
     element = document.getElementById('modifyBtn');
     element.addEventListener('click', function () {
         modify();
+    });
+
+    element = document.getElementById('advancedModifyBtn');
+    element.addEventListener('click', function () {
+        advancedModify();
     });
 
     element = document.getElementById('addBtn');
@@ -27,19 +37,19 @@ function walk() {
    let textArea = document.getElementById('walkOutput'); 
 
    el = document.getElementById('p1');
-   textArea.value += showNode(el);
+   textArea.value += showNode(el) + `\n\n`;
 
    el = el.firstChild;
-   textArea.value += showNode(el);
+   textArea.value += showNode(el) + `\n\n`;
 
    el = el.nextSibling;
-   textArea.value += showNode(el);
+   textArea.value += showNode(el) + `\n\n`;
 
    el = el.lastChild;
-   textArea.value += showNode(el);
+   textArea.value += showNode(el) + `\n\n`;
 
    el = el.parentNode.parentNode.parentNode;
-   textArea.value += showNode(el);
+   textArea.value += showNode(el) + `\n\n`;
 
    el = el.querySelector('section > *');
    textArea.value += showNode(el);
@@ -51,18 +61,31 @@ function showNode(el) {
     let nodeName = el.nodeName;
     let nodeValue = el.nodeValue;
 
-    return `Node type: ${nodeType}\nNode name: ${nodeName}\nNode value: ${nodeValue}\n\n`;
+    return `Node type: ${nodeType}\nNode name: ${nodeName}\nNode value: ${nodeValue}`;
 }
 
-function traverseWalk() {
-    
+function traverseWalk(node, indent=0) {
+    let output = "";
+    stack.forEach(() => {
+        output += "--";
+    });
+    output += node.nodeName + "\n";
+
+    let children = Array.from(node.children);
+    for(let i=0; i < children.length; i++){
+        stack.push(i);
+        output += traverseWalk(children[i], stack);
+        stack.pop();
+    }
+    return output;
 }
 
 function advancedWalk() {
     let rootElement = document.documentElement; 
     let textArea = document.getElementById('walkAdvancedOutput'); 
 
-    
+    let output = traverseWalk(rootElement);
+    textArea.value = output;
 }
 
 function modify() {
@@ -86,6 +109,15 @@ function modify() {
     el.dataset.cool = 'true';       // data-cool="true"
     el.dataset.coolFactor = '9000'; //data-cool-factor="9000"
 
+}
+
+function advancedModify() {
+    let h1Element = document.querySelector('h1');
+    h1Element.innerText = `DOM Manipulation is Fun!`;
+
+    let colorTag = Math.floor(Math.random() * 6) + 1; 
+    console.log(colorTag);
+    h1Element.style.color = `var(--darkcolor${colorTag})`; 
 }
 
 function add() {
