@@ -26,9 +26,24 @@ function init() {
         add();
     });
 
+    element = document.getElementById('advancedAddBtn');
+    element.addEventListener('click', function () {
+        advancedAddition();
+    });
+
     element = document.getElementById('removeBtn');
     element.addEventListener('click', function () {
         remove();
+    });
+
+    element = document.getElementById('deleteBtn');
+    element.addEventListener('click', function () {
+        safeDelete(); 
+    });
+
+    element = document.getElementById('deleteSelectorBtn');
+    element.addEventListener('click', function () {
+        deleteSelector(); 
     });
 }
 
@@ -118,6 +133,9 @@ function advancedModify() {
     let colorTag = Math.floor(Math.random() * 6) + 1; 
     console.log(colorTag);
     h1Element.style.color = `var(--darkcolor${colorTag})`; 
+
+    let pElement = document.querySelector('p');
+    pElement.classList.toggle('shmancy');
 }
 
 function add() {
@@ -146,8 +164,47 @@ function add() {
     // clearly short hands are pretty easy!
 }
 
+function advancedAddition() {
+    let selector = document.getElementById('selectAdd');
+    let outputText = document.getElementById('output-advanced-add');
+    let currentDate = new Date().toLocaleString();
+    
+    console.log(selector.value);
+    console.log('Enter switch case');
+    switch (selector.value) {
+        case 'text':
+            let textNode = document.createTextNode('New Text Node - ' + currentDate);
+            outputText.appendChild(textNode);
+            break;
+        case 'comment':
+            let comment = document.createComment('New Comment - ' + currentDate);
+            outputText.appendChild(comment);
+            alert('New Comment has been added with the date: ' + currentDate);
+            break;
+        case 'element':
+            let newElement = document.createElement('p');
+            newElement.textContent = 'New Element - ' + currentDate;
+            outputText.appendChild(newElement);
+            break;
+    }
+}
+
 function remove() {
   document.body.removeChild(document.body.lastChild);
+}
+
+function safeDelete() {
+    let controlsSection = document.getElementById('controls');
+    let bodyChildren = document.body.childNodes;
+    for (let i = bodyChildren.length - 1; i >= 0; i--) { 
+        if (bodyChildren[i] !== controlsSection && bodyChildren[i].nodeType === Node.ELEMENT_NODE) {
+            document.body.removeChild(bodyChildren[i]);
+        }
+    }
+}
+
+function deleteSelector() {
+
 }
 
 window.addEventListener('DOMContentLoaded', init);
