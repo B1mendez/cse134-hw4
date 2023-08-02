@@ -48,7 +48,12 @@ function init() {
 
   element = document.getElementById("basicCloneBtn");
   element.addEventListener("click", function () {
-    basicClone(); 
+    basicClone();
+  });
+
+  element = document.getElementById("advancedCloneBtn");
+  element.addEventListener("click", function () {
+    advancedClone();
   });
 }
 
@@ -237,11 +242,54 @@ function deleteSelector() {
 }
 
 function basicClone() {
-    let el = document.getElementById('p1');
-    let clone = el.cloneNode(true);
-    let outputClone = document.getElementById('output-basic-clone');
+  let el = document.getElementById('p1');
+  let clone = el.cloneNode(true);
+  let outputClone = document.getElementById('output-basic-clone');
 
-    outputClone.append(clone);
+  clone.removeAttribute("class");
+  clone.removeAttribute("id");
+
+  outputClone.append(clone);
 }
- 
-window.addEventListener("DOMContentLoaded", init);
+
+function advancedClone() {
+  let templates = document.getElementById("card-container");
+  if (!templates) {
+    return alert("Warning: Template does not exist")
+  };
+  let container = document.getElementById('output-basic-clone');
+  let clone = templates.content.cloneNode(true);
+  let uniqueContent = {};
+
+  // Make more elements here by using a case statement
+  uniqueContent = {
+    title: "Cloud of dust",
+    img: "/images/card-1.jpg",
+    text: "This is an image of a nebula captured by the james web telescope",
+    link: "https://www.nasa.gov/image-feature/goddard/2022/nasa-s-webb-reveals-cosmic-cliffs-glittering-landscape-of-star-birth"
+  };
+
+
+  clone.querySelector('.card-title').innerText = uniqueContent.title;
+    clone.querySelector('.card-img img').src = uniqueContent.img;
+    clone.querySelector('.card-info p').innerText = uniqueContent.text;
+    clone.querySelector('.card-link').href = uniqueContent.link;
+
+    let clonedTemplate = document.createElement('template');
+    clonedTemplate.content.appendChild(clone);
+    clonedTemplate.setAttribute('id', `card-container-${uuidv4()}`);
+
+    container.appendChild(clonedTemplate);
+  }
+
+  // function from the following site https://www.geeksforgeeks.org/how-to-create-a-guid-uuid-in-javascript/
+  function uuidv4() {
+    return 'xxxx'
+      .replace(/[xy]/g, function (c) {
+        const r = Math.random() * 4 | 0,
+          v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(4);
+      });
+  }
+
+  window.addEventListener("DOMContentLoaded", init);
