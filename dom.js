@@ -90,25 +90,22 @@ function showNode(el) {
 
 function traverseWalk(node, indent = 0) {
   let output = "";
-  stack.forEach(() => {
+  for (let i = 0; i < indent; i++) {
     output += "--";
-  });
+  }
   output += node.nodeName + "\n";
 
-  let children = Array.from(node.children);
-  for (let i = 0; i < children.length; i++) {
-    stack.push(i);
-    output += traverseWalk(children[i], stack);
-    stack.pop();
+  for (let i = 0; i < node.children.length; i++) {
+    output += traverseWalk(node.children[i], indent + 1);
   }
   return output;
 }
 
 function advancedWalk() {
   let rootElement = document.documentElement;
-  let textArea = document.getElementById("walkAdvancedOutput");
-
+  let textArea = document.getElementById('walkAdvancedOutput');
   let output = traverseWalk(rootElement);
+
   textArea.value = output;
 }
 
@@ -271,25 +268,25 @@ function advancedClone() {
 
 
   clone.querySelector('.card-title').innerText = uniqueContent.title;
-    clone.querySelector('.card-img img').src = uniqueContent.img;
-    clone.querySelector('.card-info p').innerText = uniqueContent.text;
-    clone.querySelector('.card-link').href = uniqueContent.link;
+  clone.querySelector('.card-img img').src = uniqueContent.img;
+  clone.querySelector('.card-info p').innerText = uniqueContent.text;
+  clone.querySelector('.card-link').href = uniqueContent.link;
 
-    let clonedTemplate = document.createElement('template');
-    clonedTemplate.content.appendChild(clone);
-    clonedTemplate.setAttribute('id', `card-container-${uuidv4()}`);
+  let clonedTemplate = document.createElement('template');
+  clonedTemplate.content.appendChild(clone);
+  clonedTemplate.setAttribute('id', `card-container-${uuidv4()}`);
 
-    container.appendChild(clonedTemplate);
-  }
+  container.appendChild(clonedTemplate);
+}
 
-  // function from the following site https://www.geeksforgeeks.org/how-to-create-a-guid-uuid-in-javascript/
-  function uuidv4() {
-    return 'xxxx'
-      .replace(/[xy]/g, function (c) {
-        const r = Math.random() * 4 | 0,
-          v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(4);
-      });
-  }
+// function from the following site https://www.geeksforgeeks.org/how-to-create-a-guid-uuid-in-javascript/
+function uuidv4() {
+  return 'xxxx'
+    .replace(/[xy]/g, function (c) {
+      const r = Math.random() * 4 | 0,
+        v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(4);
+    });
+}
 
-  window.addEventListener("DOMContentLoaded", init);
+window.addEventListener("DOMContentLoaded", init);
